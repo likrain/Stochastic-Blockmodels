@@ -8,3 +8,6 @@ The aim of the project is to fit different stochastic blockmodels via a plenty o
 First Try.
 
 Second try.
+
+
+Third try.
