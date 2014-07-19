@@ -1,0 +1,47 @@
+% compute the lower bound
+function L = lblikelihood(X,Tau,Alpha,PI,Distribution,NetType)
+
+n = size(X,1);
+tmp = sum(sum(Tau(Tau>0).*log(Tau(Tau>0))));
+tmp1 = Tau.*repmat(log(Alpha),n,1);
+tmp1(isnan(tmp1)) = 0;
+C = sum(sum(tmp1)) - tmp;
+
+switch Distribution
+    
+    case 'Bernoulli'
+        b = log(1-PI);
+        a = log(PI) - b;
+        tmp = Tau*b';
+        tmp = repmat(sum(tmp),n,1) - tmp;
+        tmp1 = Tau.*(X*Tau*a');
+        tmp1(isnan(tmp1))=0;
+        tmp2 = Tau.*tmp;
+        tmp2(isnan(tmp2))=0;
+        A = sum(sum(tmp1))+sum(sum(tmp2));
+        switch NetType
+            case 'undirected'
+                L = 0.5*A - C;
+            case 'directed'
+                L = A - C;
+        end
+        
+    case 'Possion'
+        a = log(PI);
+        tmp = Tau*PI';
+        tmp = tmp - repmat(sum(tmp),n,1);
+        tmp1 = Tau.*(X*Tau*a');
+        tmp1(isnan(tmp1))=0;
+        tmp2 = Tau.*tmp;
+        tmp2(isnan(tmp2))=0;
+        tm3 = log(factorial(X))*repmat(sum(Tau,2),1,Q);
+        A = sum(sum(tmp1))+sum(sum(tmp2))-;
+        switch NetType
+            case 'undirected'
+                L = 0.5*A - C;
+            case 'directed'
+                L = A - C;
+        end
+end
+
+
