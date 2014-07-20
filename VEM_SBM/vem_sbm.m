@@ -1,4 +1,4 @@
-function [PI, Alpha, Tau, CluResult,time] = VEM(X, Q, Distribution,MaxIter,IniType, NetType, )
+function [PI, Alpha, Tau, Est_Glabel,time] = vem_sbm(X, Q, Distribution,MaxIter,IniType, NetType)
 %
 % Author - Xiangyong Cao, 07/2014
 %
@@ -11,13 +11,13 @@ function [PI, Alpha, Tau, CluResult,time] = VEM(X, Q, Distribution,MaxIter,IniTy
 %        - MaxIter   : iteration number, default 200
 %        - IniType   : 'random','spectral'
 %        - NetType   : 'undirected','directed'
-%        - Distribution: 'Bernoulli','Possion'
+%        - Distribution: 'Bernoulli','Poisson'
 % Output - PI        : for 'Bernoulli', the link probability matrix   Q x Q
 %                    : for 'Possion', the average number of edges between
 %                    groups
 %        - Alpha     : proportion of each group
 %        - Tau       : posterior probability of each vertex
-%        - CluResult : label of each vertex
+%        - Est_Glabel : label of each vertex
 %        - time       : optimizing time
 % -------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ if nargin < 6
     NetType = 'undirected';
 end
 if nargin < 5
-    IniType = 'Spectral';
+    IniType = 'spectral';
 end
 if nargin < 4
     MaxIter = 200;
@@ -49,9 +49,9 @@ switch IniType
 end
 
 % ----------internal control parameters----------
-int_maxIter = 5;
+int_maxIter = 10;
 out_tol = 1e-10;
-int_tol = 1e-4;
+int_tol = 1e-6;
 log_min = log(realmin);
 prune   = 1e-10;
 
@@ -106,7 +106,6 @@ while out_iter<MaxIter
                 Tau = Tau./repmat(sum(Tau,2),1,Q);
                 Tau(Tau<prune) = 0;
                 if int_iter > 1
-                    old_diff = diff;
                     diff = max(max(abs(Tau-old_Tau)));
                 end
                 if int_iter == 1
@@ -115,7 +114,7 @@ while out_iter<MaxIter
                 int_iter = int_iter + 1;
             end
             
-        case 'Possion'
+        case 'Poisson'
             tm1 = repmat(log(Alpha),n,1);
             int_iter = 1;
             diff = int_tol + 1;
@@ -137,7 +136,6 @@ while out_iter<MaxIter
                 Tau = Tau./repmat(sum(Tau,2),1,Q);
                 Tau(Tau<prune) = 0;
                 if int_iter > 1
-                    old_diff = diff;
                     diff = max(max(abs(Tau-old_Tau)));
                 end
                 if int_iter == 1
@@ -152,8 +150,7 @@ end
 time = toc;
 %CluResult
 if Q == 1
-    CluResult = ones(1,n);
+    Est_Glabel = ones(1,n);
 else
-    CluResult = CluResult1;
+    [~,Est_Glabel] = max(Tau,[],2);
 end
-

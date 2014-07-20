@@ -26,7 +26,7 @@ switch Distribution
                 L = A + C;
         end
         
-    case 'Possion'
+    case 'Poisson'
         a = log(PI);
         tmp = Tau*PI';
         tmp = tmp - repmat(sum(tmp),n,1);
