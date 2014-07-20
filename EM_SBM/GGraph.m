@@ -1,4 +1,4 @@
-% The function GGraph is generating a directed or undirecte graph 
+% The function GGraph is generating a directed or undirecte Bernoulli graph 
 % which has community structures via Stochastic Blockmodels.
 % Input: n is the number of nodes.
 %        Pi is the propotion of the different groups.
