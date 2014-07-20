@@ -22,7 +22,7 @@ Glabel(temp1) = temp2; % get group labels
 
 switch gtype
     case 'directed'
-        A = (Z*P*Z'<=rand(n));
+        A = (Z*P*Z'>=rand(n));
         A = A - diag(diag(A));
     case 'undirected'
         A = (Z*P*Z'<=rand(n));
