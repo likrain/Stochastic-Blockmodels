@@ -25,7 +25,7 @@ switch gtype
         A = (Z*P*Z'>=rand(n));
         A = A - diag(diag(A));
     case 'undirected'
-        A = (Z*P*Z'<=rand(n));
+        A = (Z*P*Z'>=rand(n));
         A = triu(A) - diag(diag(A));
         A = A + A';
 end
