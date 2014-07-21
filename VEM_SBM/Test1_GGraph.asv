@@ -1,14 +1,20 @@
-clear all
-tic;
-Alpha = [0.5,0.5];
-PI=[6,1;1,5];
-n =100;
-Distribution = 'Poisson';
-NetType = 'directed';
+% Test1: Simulation of "Bernoulli" SBM and "Poisson" SBM 
+tic;clear all;
+n =500;
+Alpha = [0.8,0.2];
+Distribution = 'Bernoulli';
+switch Distribution
+    case 'Bernoulli'
+        PI = [0.6,0.05;0.05,0.6];
+    case 'Poisson'
+        PI=[7,1;1,6];
+end
+NetType = 'undirected';
+Q = length(Alpha);
+
 [A, Glabel,Z] = GGraph(n,Alpha,PI,Distribution,NetType);
 
-Q = length(Alpha);
-[PI, Alpha, Tau, Est_Glabel,time] = vem_sbm(A, Q, Distribution,300,'spectral', NetType);
+[Est_PI, Est_Alpha, Tau, Est_Glabel,time] = vem_sbm(A, Q, Distribution,300,'random', NetType);
 
 %CER
 cer = CER(Glabel,Est_Glabel);

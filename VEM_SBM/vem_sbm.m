@@ -62,7 +62,7 @@ while out_iter<MaxIter
     out_iter
     
     %% Variational M step
-    % update Alpha, PI, Theta
+    % update Alpha, PI
     col_sum = sum(Tau);
     Alpha = col_sum/n;
     PI = (Tau' * X * Tau)./(col_sum'*col_sum - Tau'*Tau);
@@ -148,7 +148,8 @@ while out_iter<MaxIter
 end
 
 time = toc;
-%CluResult
+
+%Est_Label
 if Q == 1
     Est_Glabel = ones(1,n);
 else
