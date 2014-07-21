@@ -2,6 +2,8 @@
 function L = lblikelihood(X,Tau,Alpha,PI,Distribution,NetType)
 
 n = size(X,1);
+Q = length(Alpha);
+% tmp = sum(sum(Tau)).*log(Tau);
 tmp = sum(sum(Tau(Tau>0).*log(Tau(Tau>0))));
 tmp1 = Tau.*repmat(log(Alpha),n,1);
 tmp1(isnan(tmp1)) = 0;

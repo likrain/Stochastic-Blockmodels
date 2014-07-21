@@ -1,17 +1,17 @@
 clear all
 tic;
-Alpha = [0.6,0.4];
-PI=[0.5,0.05;0.05,0.5];
+Alpha = [0.5,0.5];
+PI=[6,1;1,5];
 n =100;
-Distribution = 'Bernoulli';
-NetType = 'undirected';
+Distribution = 'Poisson';
+NetType = 'directed';
 [A, Glabel,Z] = GGraph(n,Alpha,PI,Distribution,NetType);
 
 Q = length(Alpha);
-[PI, Alpha, Tau, CluResult,time] = vem_sbm(A, Q, Distribution,300,'spectral', NetType);
+[PI, Alpha, Tau, Est_Glabel,time] = vem_sbm(A, Q, Distribution,300,'spectral', NetType);
 
 %CER
-cer = CER(Glabel,CluResult);
+cer = CER(Glabel,Est_Glabel);
 
 %Draw
 GEindex1 = find(Est_Glabel==1);
