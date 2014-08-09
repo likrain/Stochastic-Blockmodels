@@ -68,14 +68,15 @@ while  iter<=maxIter
         diff = max(max(abs(Theta-old_Theta)));
         in_iter = in_iter + 1;
     end
-    %update W
     
+    %update W
+    W = Gradient_Ascent (W,A,Tau,Theta);
     
      % convergence
     if iter > 1
         old_L = L;
     end
-    L = LBLogComlikelihood(A,Pi,Theta,Gamma,w);
+    L = LBLogComlikelihood(A,Alpha,,Gamma,w);
     if iter > 1
         err = abs(1-L/old_L);
         if err < tol

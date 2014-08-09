@@ -60,21 +60,23 @@ while  iter<=maxIter
     max_InIter = 10;
     while in_iter< max_InIter && diff>int_tol
         old_Theta = Theta;
-        tmp1 = sum(A);
-        tmp = Tau*W*Tau';
-        
-         
+        tmp1 = sum(A,2);
+        tp1 = Tau*W*Tau';
+        tp2 = repmat(Theta,n,1);
+        tmp2 = sum(tp2.*tp1,2);
+        Theta = tmp1./tmp2;
         diff = max(max(abs(Theta-old_Theta)));
         in_iter = in_iter + 1;
     end
-    %update W
     
+    %update W
+    W = Gradient_Ascent (W,A,Tau,Theta);
     
      % convergence
     if iter > 1
         old_L = L;
     end
-    L = LBLogComlikelihood(A,Pi,Theta,Gamma,w);
+    L = LBLogComlikelihood(A,Alpha,Theta,W,Tau);
     if iter > 1
         err = abs(1-L/old_L);
         if err < tol
